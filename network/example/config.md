@@ -23,8 +23,8 @@ CPU 2Core
 SSD 2GiB  
 
 # VyOSのインストール
-- インストールディスクを起動する
-- イメージをシステムディスクに書き込む
+- インストールディスクを起動する  
+- イメージをシステムディスクに書き込む  
 [https://docs.vyos.io/en/equuleus/installation/install.html?highlight=requirment#permanent-installation](https://docs.vyos.io/en/equuleus/installation/install.html?highlight=requirment#permanent-installation)
 
 # VyOSの設定
