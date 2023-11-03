@@ -27,6 +27,9 @@ SSD 2GiB
 - イメージをシステムディスクに書き込む  
 [https://docs.vyos.io/en/equuleus/installation/install.html?highlight=requirment#permanent-installation](https://docs.vyos.io/en/equuleus/installation/install.html?highlight=requirment#permanent-installation)
 
+初期ユーザー名: vyos  
+初期パスワード: vyos  
+
 # VyOSの設定
 ```[名前]```の部分は適切な値に変更する必要があります。
 
