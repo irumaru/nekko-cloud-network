@@ -4,7 +4,7 @@
 ## ホストに関する初期設定
 ### パスワードの設定
 ```
-set system login user vyos authentication plaintext-password [パスワード]
+set system login user vyos authentication plaintext-password [このルータのパスワード]
 ```
 ### sshの有効化
 ```
@@ -12,25 +12,32 @@ set service ssh port '22'
 ```
 ### ホスト名の設定
 ```
-set system host-name '[ホスト名]'
+set system host-name '[このルータのホスト名]'
 ```
 
 ## インターネット接続の設定
 ### インターフェスのアドレス設定
 ```
-set interfaces ethernet eth0 address '[eth0のIPアドレス]/24'
+set interfaces ethernet eth0 address '[eth0(WAN)のIPアドレス]/24'
 set interfaces ethernet eth0 ipv6 address autoconf
 ```
+IPv4固定  
+IPv6は上位ルータからのRAにより自動設定  
+
 ### ゲートウェイの設定
 ```
 set protocols static route 0.0.0.0/0 next-hop [上位ルーターのIPv4アドレス]
 ```
+IPv4は上位ルーターをデフォルトゲートウェイとして設定  
+IPv6は上位ルータからのRAにより自動設定  
+
 ### NATの設定
 ```
 set nat source rule 100 outbound-interface 'eth0'
 set nat source rule 100 source address '[eth1のネットワークアドレス]/24'
 set nat source rule 100 translation address 'masquerade'
 ```
+eth1のIPアドレスは各リージョンのローカルIPアドレスを設定
 
 ## リージョン内ネットワークの設定
 ```
@@ -44,7 +51,7 @@ generate wireguard named-keypairs nclab
 ```
 ### VPN接続の設定
 ```
-set interfaces wireguard wg0 address '[wg0のIPアドレス]/24'
+set interfaces wireguard wg0 address '[wg0(VPN用のこのルータのIF)のIPアドレス]/24'
 set interfaces wireguard wg0 description '[接続先のリージョン名]'
 set interfaces wireguard wg0 peer to-wg1 address '[接続先リージョンのルーターのIPv6アドレス]'
 set interfaces wireguard wg0 peer to-wg1 allowed-ips '172.16.0.0/20'
