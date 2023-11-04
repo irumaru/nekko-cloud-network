@@ -50,7 +50,7 @@ eth1 リージョン内ネットワークへの接続用
 # VyOSの基本操作
 ## 設定モードへ入る
 ```
-configue
+show configuration commands
 ```
 ## 設定を一時保存(再起動すると消える)
 ```
