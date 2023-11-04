@@ -116,6 +116,10 @@ set interfaces ethernet eth1 address '[eth1のIPアドレス]/24'
 ```
 generate wireguard named-keypairs nclab
 ```
+### VPM公開鍵の表示
+```
+show wireguard keypairs pubkey nclab
+```
 ### VPN接続の設定
 ```
 set interfaces wireguard wg0 address '[wg0(VPN用のこのルータのIF)のIPアドレス]/24'
