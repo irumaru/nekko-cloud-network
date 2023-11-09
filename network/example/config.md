@@ -106,6 +106,22 @@ set nat source rule 100 translation address 'masquerade'
 ```
 eth1のIPアドレスは各リージョンのローカルIPアドレスを設定
 
+### DNSの設定
+```
+set system name-server '2606:4700:4700::1111'
+set system name-server '2606:4700:4700::1001'
+```
+[https://1.1.1.1/ja-jp/](https://1.1.1.1/ja-jp/)
+
+### DNSフォワーディングの設定
+```
+set service dns forwarding allow-from '172.20.0.0/16'
+set service dns forwarding listen-address '172.20.0.1'
+set service dns forwarding name-server '2606:4700:4700::1111'
+set service dns forwarding name-server '2606:4700:4700::1001'
+set service dns forwarding no-serve-rfc1918
+```
+
 ## リージョン内ネットワークの設定
 ```
 set interfaces ethernet eth1 address '[eth1のIPアドレス]/24'
