@@ -138,6 +138,17 @@ delete interface wireguard [インターフェス名]
 ```
 インターフェス名は```wg0```など。
 
+### IPIP6トンネル用外側インターフェスを作成
+IPIP6トンネルは、IPv6パケットの中に直接オーバーレイネットワークのIPv4パケットを格納するため、1つの外側IPv6インターフェス(IPv6アドレス)を占有する。  
+そのため、IPIP6トンネルごとに専用IPv6アドレスを作成する必要。  
+```
+set interfaces ethernet eth0 address [このルータの拠点間接続用一意なIPv6アドレス]/64
+```
+例
+```
+set interfaces ethernet eth0 address '2401:2500:10a:103a::1000/64'
+```
+
 ### IPIP6トンネルの作成
 ```
 set interfaces tunnel tun0 address '[tun0(VPN用のこのルータのIF)のIPアドレス]/24'
