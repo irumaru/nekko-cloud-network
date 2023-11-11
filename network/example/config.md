@@ -115,8 +115,8 @@ set system name-server '2606:4700:4700::1001'
 
 ### DNSフォワーディングの設定
 ```
-set service dns forwarding allow-from '172.20.0.0/16'
-set service dns forwarding listen-address '172.20.0.1'
+set service dns forwarding allow-from '[リージョンのネットワークアドレス]/16'
+set service dns forwarding listen-address '[eth1のIPアドレス]'
 set service dns forwarding name-server '2606:4700:4700::1111'
 set service dns forwarding name-server '2606:4700:4700::1001'
 set service dns forwarding no-serve-rfc1918
