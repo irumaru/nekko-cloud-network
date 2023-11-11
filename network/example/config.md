@@ -168,7 +168,7 @@ set interfaces tunnel tun0 source-address '2401:2500:10a:103a::36'
 
 ### 動的ルーティングの設定
 ```
-set protocols ospf area 0 network '[tun0のネットワークアドレス]/24'
+set protocols ospf area 0 network '172.16.0.0/16'
 set protocols ospf area 0 network '[eth1のネットワークアドレス]/24'
 set protocols ospf parameters router-id '[eth1のIPv4アドレス]'
 ```
