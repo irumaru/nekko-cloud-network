@@ -128,31 +128,47 @@ set interfaces ethernet eth1 address '[eth1のIPアドレス]/24'
 ```
 
 ## リージョン間接続の設定(拠点間接続数分)
-### VPN鍵の作成
+
+### Wireguard接続の削除
+以前にWireguardの接続を行っていた場合は、wireguard接続を削除してください。  
+理由: フレッツ網内でWireguardのレスポンドパケット消失が発生。原因が不明で未解決のため。  
+[これに関する議論](https://github.com/irumaru/nekko-cloud-network/issues/1)  
 ```
-generate wireguard named-keypairs nclab
+delete interface wireguard [インターフェス名]
 ```
-### VPM公開鍵の表示
+インターフェス名は```wg0```など。
+
+### IPIP6トンネル用外側インターフェスを作成
+IPIP6トンネルは、IPv6パケットの中に直接オーバーレイネットワークのIPv4パケットを格納するため、1つの外側IPv6インターフェス(IPv6アドレス)を占有します。  
+そのため、IPIP6トンネルごとに専用IPv6アドレスを作成する必要があります。  
 ```
-show wireguard keypairs pubkey nclab
+set interfaces ethernet eth0 address [このルータの一意なIPv6アドレス]/64
 ```
-### VPN接続の設定
+例
 ```
-set interfaces wireguard wg0 address '[wg0(VPN用のこのルータのIF)のIPアドレス]/24'
-set interfaces wireguard wg0 description '[接続先のリージョン名]'
-set interfaces wireguard wg0 peer to-wg1 address '[接続先リージョンのルーターのIPv6アドレス]'
-set interfaces wireguard wg0 peer to-wg1 allowed-ips '172.16.0.0/20'
-set interfaces wireguard wg0 peer to-wg1 allowed-ips '224.0.0.5/32'
-set interfaces wireguard wg0 peer to-wg1 allowed-ips '224.0.0.6/32'
-set interfaces wireguard wg0 peer to-wg1 port '51820'
-set interfaces wireguard wg0 peer to-wg1 pubkey '[接続先リージョンのルーターの公開鍵]'
-set interfaces wireguard wg0 port '51820'
-set interfaces wireguard wg0 private-key 'nclab'
-set protocols static interface-route 172.16.0.0/24 next-hop-interface wg0 disable
+set interfaces ethernet eth0 address '2401:2500:10a:103a::36/64'
 ```
+
+### IPIP6トンネルの作成
+```
+set interfaces tunnel tun0 address '[tun0(VPN用のこのルータのIF)のIPアドレス]/24'
+set interfaces tunnel tun0 encapsulation 'ipip6'
+set interfaces tunnel tun0 mtu '1460'
+set interfaces tunnel tun0 remote '[接続先リージョンのルーターのIPv6アドレス]'
+set interfaces tunnel tun0 source-address '[このルータの一意なIPv6アドレス]'
+```
+例
+```
+set interfaces tunnel tun0 address '172.16.3.2/24'
+set interfaces tunnel tun0 encapsulation 'ipip6'
+set interfaces tunnel tun0 mtu '1460'
+set interfaces tunnel tun0 remote '2001:f71:b200:a51:98b8:11ff:fe5d:cfe0'
+set interfaces tunnel tun0 source-address '2401:2500:10a:103a::36'
+```
+
 ### 動的ルーティングの設定
 ```
-set protocols ospf area 0 network '[wg0のネットワークアドレス]/24'
+set protocols ospf area 0 network '[tun0のネットワークアドレス]/24'
 set protocols ospf area 0 network '[eth1のネットワークアドレス]/24'
 set protocols ospf parameters router-id '[eth1のIPv4アドレス]'
 ```
